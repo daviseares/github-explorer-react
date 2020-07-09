@@ -5,7 +5,7 @@
 </h3>
 
 <span align="center">
-<img alt="github_logo" src="./github/dashboard.png" />
+<img alt="github_logo" src="https://github.com/daviseares/github-explorer-react/blob/master/.github/dashboard.png" />
 </span>
 
 <p align="center">Aplicação em React e Typescript para explorar repositórios do github.</p>
