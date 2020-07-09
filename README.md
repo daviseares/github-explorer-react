@@ -1,11 +1,11 @@
-<img alt="github_logo" src="./src/assets/github_logo.svg" />
+
 
 <h3 align="center">
- Github Explorer
+<img alt="github_logo" src="./src/assets/github_logo.svg" />
 </h3>
 
 <span align="center">
-
+<img alt="github_logo" src="./github/dashboard.png" />
 </span>
 
 <p align="center">Aplicação em React e Typescript para explorar repositórios do github.</p>
