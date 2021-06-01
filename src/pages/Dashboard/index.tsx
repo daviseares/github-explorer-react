@@ -6,14 +6,14 @@ import { Title, Form, Repositories, Error } from './styles';
 
 import api from '../../services/api';
 
-interface Repository {
+type Repository = {
   full_name: string;
   description: string;
   owner: {
     login: string;
     avatar_url: string;
   };
-}
+};
 
 const Dashboard: React.FC = () => {
   const [newRepo, setNewRepo] = useState('');
@@ -43,7 +43,7 @@ const Dashboard: React.FC = () => {
     event.preventDefault();
 
     if (!newRepo) {
-      setInpuError('Digite o auto/nome do repositório');
+      setInpuError('Digite o autor/nome do repositório');
       return;
     }
 
@@ -67,7 +67,7 @@ const Dashboard: React.FC = () => {
       <Form hasError={!!inputError} onSubmit={handleAddRepository}>
         <input
           value={newRepo}
-          placeholder="Digite o nome do repositório"
+          placeholder="Digite o 'ator/nome' do repositório"
           onChange={e => setNewRepo(e.target.value)}
         />
         <button type="submit">Pesquisar</button>

@@ -5,11 +5,11 @@ import logoImg from '../../assets/github_logo.svg';
 import api from '../../services/api';
 import { Header, RepositoryInfo, Issues } from './styles';
 
-interface RepositoryParams {
+type RepositoryParams = {
   repository: string;
-}
+};
 
-interface Repository {
+type Repository = {
   full_name: string;
   description: string;
   stargazers_count: number;
@@ -19,16 +19,16 @@ interface Repository {
     login: string;
     avatar_url: string;
   };
-}
+};
 
-interface Issue {
+type Issue = {
   id: number;
   title: string;
   html_url: string;
   user: {
     login: string;
   };
-}
+};
 
 const Repository: React.FC = () => {
   const { params } = useRouteMatch<RepositoryParams>();
