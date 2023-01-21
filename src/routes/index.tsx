@@ -1,14 +1,13 @@
-import React from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Routes } from '~/modules';
+import { Dashboard, Repository } from '~/pages';
 
-import Dashboard from '../pages/Dashboard';
-import Repository from '../pages/Repository';
-
-const Routes: React.FC = () => (
-  <Switch>
-    <Route path="/" exact component={Dashboard} />
-    <Route path="/repositories/:repository+" component={Repository} />
-  </Switch>
+const AppRoutes = () => (
+  <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Dashboard />} />
+      <Route path="/repositories/:repository+" element={<Repository />} />
+    </Routes>
+  </BrowserRouter>
 );
 
-export default Routes;
+export default AppRoutes;
