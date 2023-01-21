@@ -1,38 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import { useRouteMatch, Link } from 'react-router-dom';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import logoImg from '../../assets/github_logo.svg';
-import api from '../../services/api';
-import { Header, RepositoryInfo, Issues } from './styles';
+import { useEffect, useState } from 'react';
+import { GithubLogo } from '~/assets';
+import { Issue, RepositoryType } from '~/mappers';
+import { FiChevronLeft, FiChevronRight, Link, useParams } from '~/modules';
+import api from '../../api/request';
+import { Header, Issues, RepositoryInfo } from './styles';
 
 type RepositoryParams = {
   repository: string;
 };
 
-type Repository = {
-  full_name: string;
-  description: string;
-  stargazers_count: number;
-  forks_count: number;
-  open_issues_count: number;
-  owner: {
-    login: string;
-    avatar_url: string;
-  };
-};
-
-type Issue = {
-  id: number;
-  title: string;
-  html_url: string;
-  user: {
-    login: string;
-  };
-};
-
-const Repository: React.FC = () => {
-  const { params } = useRouteMatch<RepositoryParams>();
-  const [repository, setRepository] = useState<Repository | null>(null);
+const Repository = () => {
+  const params = useParams<RepositoryParams>();
+  const [repository, setRepository] = useState<RepositoryType | null>(null);
   const [issues, setIssues] = useState<Issue[]>([]);
 
   useEffect(() => {
@@ -48,7 +27,7 @@ const Repository: React.FC = () => {
   return (
     <>
       <Header>
-        <img src={logoImg} alt="Github Explorer" />
+        <img src={GithubLogo} alt="Github Explorer" />
         <Link to="/">
           <FiChevronLeft size={16} />
           Voltar
@@ -89,8 +68,7 @@ const Repository: React.FC = () => {
             href={issue.html_url}
             key={issue.id}
             target="_blank"
-            rel="noopener noreferrer"
-          >
+            rel="noopener noreferrer">
             <div>
               <strong>{issue.title}</strong>
               <p>{issue.user.login}</p>

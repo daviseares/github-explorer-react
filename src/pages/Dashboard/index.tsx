@@ -1,24 +1,14 @@
-import React, { useState, useEffect, FormEvent } from 'react';
-import { FiChevronRight } from 'react-icons/fi';
-import { Link } from 'react-router-dom';
-import logoImg from '../../assets/github_logo.svg';
-import { Title, Form, Repositories, Error } from './styles';
+import { FormEvent, useEffect, useState } from 'react';
+import { GithubLogo } from '~/assets';
+import { RepositoryType } from '~/mappers';
+import { FiChevronRight, Link } from '~/modules';
+import api from '../../api/request';
+import { Error, Form, Repositories, Title } from './styles';
 
-import api from '../../services/api';
-
-type Repository = {
-  full_name: string;
-  description: string;
-  owner: {
-    login: string;
-    avatar_url: string;
-  };
-};
-
-const Dashboard: React.FC = () => {
-  const [newRepo, setNewRepo] = useState('');
+export const Dashboard = () => {
+  const [user, setUser] = useState('');
   const [inputError, setInpuError] = useState('');
-  const [repositories, setRepositories] = useState<Repository[]>(() => {
+  const [repositories, setRepositories] = useState<RepositoryType[]>(() => {
     const storagedRepositories = localStorage.getItem(
       '@GithubExplorer:repositories',
     );
@@ -42,33 +32,33 @@ const Dashboard: React.FC = () => {
   ): Promise<void> {
     event.preventDefault();
 
-    if (!newRepo) {
-      setInpuError('Digite o autor/nome do repositório');
+    if (!user) {
+      setInpuError('Digite um usário válido do github');
       return;
     }
 
     try {
-      const response = await api.get<Repository>(`repos/${newRepo}`);
+      const response = await api.get<RepositoryType>(`users/${user}/repos`);
 
       const repository = response.data;
 
       setRepositories([...repositories, repository]);
-      setNewRepo('');
+      setUser('');
       setInpuError('');
     } catch (error) {
-      setInpuError('Erro na busca do repositório');
+      setInpuError('Erro na busca de repositórios');
     }
   }
 
   return (
     <>
-      <img src={logoImg} alt="github Explorer" />
+      <img src={GithubLogo} alt="github Explorer" />
       <Title>Explore repositórios do github</Title>
       <Form hasError={!!inputError} onSubmit={handleAddRepository}>
         <input
-          value={newRepo}
-          placeholder="Digite o 'ator/nome' do repositório"
-          onChange={e => setNewRepo(e.target.value)}
+          value={user}
+          placeholder="Digite o 'autor' do repositório"
+          onChange={e => setUser(e.target.value)}
         />
         <button type="submit">Pesquisar</button>
       </Form>
@@ -77,8 +67,7 @@ const Dashboard: React.FC = () => {
         {repositories.map(repository => (
           <Link
             to={`/repositories/${repository.full_name}`}
-            key={repository.full_name}
-          >
+            key={repository.full_name}>
             <img src={repository.owner.avatar_url} alt={repository.full_name} />
             <div>
               <strong>{repository.full_name}</strong>

@@ -1,5 +1,4 @@
-import styled from 'styled-components';
-import { lighten } from 'polished';
+import { lighten, styled } from '~/modules';
 
 export const Header = styled.header`
   display: flex;
