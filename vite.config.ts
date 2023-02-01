@@ -11,10 +11,12 @@ export default defineConfig({
       '~/components': '/src/components',
       '~/mappers': '/src/mappers',
       '~/pages': '/src/pages',
+      '~/modules': '/src/modules',
       '~/routes': '/src/routes',
       '~/services': '/src/services',
       '~/stores': '/src/stores',
       '~/utils': '/src/utils',
+      '~/utils/types': '/src/utils/types',
     },
   },
 });

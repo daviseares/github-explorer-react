@@ -1,11 +1,12 @@
 import { css, lighten, shade, styled } from '~/modules';
+import { pxToRem } from '~/utils';
 
 interface FormProps {
   hasError: boolean;
 }
 
 export const Title = styled.h1`
-  font-size: 48px;
+  font-size: ${pxToRem(48, 16)};
   color: #eee;
   max-width: 450px;
   line-height: 56px;
@@ -69,7 +70,6 @@ export const Repositories = styled.div`
   a {
     background: ${lighten(0.1, '#202024')};
     border-radius: 5px;
-    width: 100%;
     display: block;
     padding: 24px;
     text-decoration: none;
@@ -97,13 +97,15 @@ export const Repositories = styled.div`
       margin: 0 16px;
       flex: 1;
 
+      overflow: auto;
+
       strong {
-        font-size: 20px;
+        font-size: ${pxToRem(20)};
         color: #e1e1e6;
       }
 
       p {
-        font-size: 18px;
+        font-size: ${pxToRem(18)};
         color: #a8a8b3;
         margin-top: 4px;
       }

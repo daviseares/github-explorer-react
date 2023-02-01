@@ -1,80 +1,67 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FC, FormEvent, useState } from 'react';
 import { GithubLogo } from '~/assets';
-import { RepositoryType } from '~/mappers';
-import { FiChevronRight, Link } from '~/modules';
-import api from '../../api/request';
+import { FiChevronRight, useNavigate } from '~/modules';
+import { useGithubStore } from '~/stores';
+import { RepositoryType } from '~/utils/types';
 import { Error, Form, Repositories, Title } from './styles';
 
-export const Dashboard = () => {
-  const [user, setUser] = useState('');
+const Dashboard: FC = () => {
+  const navigate = useNavigate();
+  const { repos, getRepos } = useGithubStore();
+  const [repoName, setRepoName] = useState('');
   const [inputError, setInpuError] = useState('');
-  const [repositories, setRepositories] = useState<RepositoryType[]>(() => {
-    const storagedRepositories = localStorage.getItem(
-      '@GithubExplorer:repositories',
-    );
 
-    if (storagedRepositories) {
-      return JSON.parse(storagedRepositories);
-    }
-
-    return [];
-  });
-
-  useEffect(() => {
-    localStorage.setItem(
-      '@GithubExplorer:repositories',
-      JSON.stringify(repositories),
-    );
-  }, [repositories]);
-
-  async function handleAddRepository(
-    event: FormEvent<HTMLFormElement>,
-  ): Promise<void> {
+  const handleAddRepository = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    if (!user) {
-      setInpuError('Digite um usário válido do github');
+    if (!repoName) {
+      setInpuError('Por favor, digite o nome do repositório');
       return;
     }
-
     try {
-      const response = await api.get<RepositoryType>(`users/${user}/repos`);
+      await getRepos(repoName);
 
-      const repository = response.data;
-
-      setRepositories([...repositories, repository]);
-      setUser('');
+      setRepoName('');
       setInpuError('');
     } catch (error) {
       setInpuError('Erro na busca de repositórios');
     }
-  }
+  };
+
+  const handleNavigate = (repository: RepositoryType) => {
+    navigate(`/repositories/${repository.name}`, { state: repository });
+  };
+
+  console.log({ repos });
 
   return (
     <>
       <img src={GithubLogo} alt="github Explorer" />
       <Title>Explore repositórios do github</Title>
+
       <Form hasError={!!inputError} onSubmit={handleAddRepository}>
         <input
-          value={user}
-          placeholder="Digite o 'autor' do repositório"
-          onChange={e => setUser(e.target.value)}
+          value={repoName}
+          placeholder="Buscar repositório"
+          onChange={e => setRepoName(e.target.value)}
         />
         <button type="submit">Pesquisar</button>
       </Form>
+
       {inputError && <Error>{inputError}</Error>}
+
       <Repositories>
-        {repositories.map(repository => (
-          <Link
-            to={`/repositories/${repository.full_name}`}
-            key={repository.full_name}>
+        {repos.map(repository => (
+          <a
+            key={repository.full_name}
+            onClick={() => handleNavigate(repository)}>
             <img src={repository.owner.avatar_url} alt={repository.full_name} />
             <div>
               <strong>{repository.full_name}</strong>
               <p>{repository.description}</p>
             </div>
             <FiChevronRight size={20} />
-          </Link>
+          </a>
         ))}
       </Repositories>
     </>

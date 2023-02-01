@@ -1,3 +1,5 @@
-export * from './github/github.mapper.interface';
+import GithubMapper from './github/github.mapper';
 
-// export { default as GithubMapper } from './github/github.mapper';
+const githubMapper = new GithubMapper();
+
+export { githubMapper };

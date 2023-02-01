@@ -1,28 +1,31 @@
-import { useEffect, useState } from 'react';
+import { FC, useEffect } from 'react';
 import { GithubLogo } from '~/assets';
-import { Issue, RepositoryType } from '~/mappers';
-import { FiChevronLeft, FiChevronRight, Link, useParams } from '~/modules';
-import api from '../../api/request';
+import { FiChevronLeft, FiChevronRight, Link, useLocation } from '~/modules';
+import { useGithubStore } from '~/stores';
+import { RepositoryType } from '~/utils/types';
+
 import { Header, Issues, RepositoryInfo } from './styles';
 
-type RepositoryParams = {
-  repository: string;
-};
+const Repository: FC = () => {
+  const { getIssues, issues, clearIssues } = useGithubStore();
+  const location = useLocation();
+  const repository = location.state as RepositoryType;
 
-const Repository = () => {
-  const params = useParams<RepositoryParams>();
-  const [repository, setRepository] = useState<RepositoryType | null>(null);
-  const [issues, setIssues] = useState<Issue[]>([]);
+  const onGetIssues = async () => {
+    try {
+      await getIssues(repository.full_name);
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
-    api.get(`repos/${params.repository}`).then(response => {
-      setRepository(response.data);
-    });
+    onGetIssues();
 
-    api.get(`repos/${params.repository}/issues`).then(response => {
-      setIssues(response.data);
-    });
-  }, [params.repository]);
+    return () => {
+      clearIssues();
+    };
+  }, []);
 
   return (
     <>
@@ -48,7 +51,7 @@ const Repository = () => {
           </header>
           <ul>
             <li>
-              <strong>{repository.stargazers_count}</strong>
+              <strong>{repository.stars_count}</strong>
               <span>Stars</span>
             </li>
             <li>
@@ -65,7 +68,7 @@ const Repository = () => {
       <Issues>
         {issues.map(issue => (
           <a
-            href={issue.html_url}
+            href={issue.url}
             key={issue.id}
             target="_blank"
             rel="noopener noreferrer">
