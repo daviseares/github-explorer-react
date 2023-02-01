@@ -1,14 +1,24 @@
+import { githubApi } from '~/api';
+import { githubMapper } from '~/mappers';
 import { combine, create, persist } from '~/modules';
-import { IGithubStore, initialState } from './github.store.interface';
+import { IGithubStore, initialState } from './github.store.config';
 
-export const githubStore = combine({ ...initialState }, set => ({
-  setRepositories: (repositories: any) => set({ repositories }),
+const githubStore = combine({ ...initialState }, set => ({
+  getRepos: async (repoName: string) => {
+    const repos = await githubApi.getRepos(repoName);
 
-  setUserName: (userName: string) => set({ userName }),
+    set({ repos: githubMapper.mapRepository(repos) });
+  },
 
-  clearUserName: () => set({ userName: '' }),
+  getIssues: async (repoFullName: string) => {
+    const issues = await githubApi.getIssues(repoFullName);
 
-  clearRepositories: () => set({ repositories: [] }),
+    set({ issues: githubMapper.mapIssue(issues) });
+  },
+
+  clearRepos: () => set({ repos: [] }),
+
+  clearIssues: () => set({ issues: [] }),
 }));
 
 export const useGithubStore = create<IGithubStore>()(

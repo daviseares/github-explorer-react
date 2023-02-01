@@ -1,4 +1,5 @@
 import { lighten, styled } from '~/modules';
+import { pxToRem } from '~/utils';
 
 export const Header = styled.header`
   display: flex;
@@ -38,7 +39,7 @@ export const RepositoryInfo = styled.section`
       margin-left: 24px;
 
       strong {
-        font-size: 36px;
+        font-size: ${pxToRem(25)};
         color: #e1e1e6;
       }
 
@@ -80,10 +81,10 @@ export const Issues = styled.div`
   a {
     background: ${lighten(0.1, '#202024')};
     border-radius: 5px;
-    width: 100%;
-    display: block;
+
     padding: 24px;
     text-decoration: none;
+    overflow-y: hidden;
 
     display: flex;
     align-items: center;
@@ -103,7 +104,7 @@ export const Issues = styled.div`
       flex: 1;
 
       strong {
-        font-size: 20px;
+        font-size: ${pxToRem(18)};
         color: #e1e1e6;
       }
 

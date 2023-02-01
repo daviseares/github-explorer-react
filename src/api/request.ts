@@ -1,4 +1,4 @@
-import axios from 'axios';
+import { axios } from '~/modules';
 
 const request = axios.create({
   baseURL: 'https://api.github.com/',
