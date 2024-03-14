@@ -1,6 +1,5 @@
 import { ResponseError } from '~/utils';
 import { RepoFromApi } from '~/utils/types';
-// import { IssueApiParams } from '~/utils/types';
 import request from '../request';
 import { IGithubApi } from './github.api.interface';
 
