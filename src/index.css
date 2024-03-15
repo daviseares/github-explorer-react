@@ -9,7 +9,7 @@
   box-sizing: 0;
 }
 body {
-  background: #202024 url('./assets/github_background.svg') no-repeat 70% top;
+  background: #202024 url('./core/assets/github_background.svg') no-repeat 70% top;
   -webkit-font-smoothing: antialiased;
 }
 
