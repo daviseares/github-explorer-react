@@ -1,11 +1,11 @@
 import React from 'react';
 import AppRoutes from './routes';
-import GlobalStyle from './utils/theme/global';
+
+import './index.css';
 
 const App: React.FC = () => (
   <>
     <AppRoutes />
-    <GlobalStyle />
   </>
 );
 

@@ -1,10 +1,10 @@
 import { FC, useEffect } from 'react';
+import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
+import { Link, useLocation } from 'react-router-dom';
 import { GithubLogo } from '~/assets';
-import { FiChevronLeft, FiChevronRight, Link, useLocation } from '~/modules';
 import { useGithubStore } from '~/stores';
 import { RepositoryType } from '~/utils/types';
-
-import { Header, Issues, RepositoryInfo } from './styles';
+import * as styles from './styles';
 
 const Repository: FC = () => {
   const { getIssues, issues, clearIssues } = useGithubStore();
@@ -29,57 +29,69 @@ const Repository: FC = () => {
 
   return (
     <>
-      <Header>
+      <header className="flex items-center justify-between">
         <img src={GithubLogo} alt="Github Explorer" />
-        <Link to="/">
+        <Link to="/" className={styles.goback()}>
           <FiChevronLeft size={16} />
           Voltar
         </Link>
-      </Header>
+      </header>
 
       {repository && (
-        <RepositoryInfo>
-          <header>
+        <section className="mt-20">
+          <header className="flex items-center">
             <img
+              className="w-28 h-28 rounded-full"
               src={repository.owner.avatar_url}
               alt={repository.owner.login}
             />
-            <div>
-              <strong>{repository.full_name}</strong>
-              <p>{repository.description}</p>
+            <div className="ml-6">
+              <strong className="text-2xl text-slate-200">
+                {repository.full_name}
+              </strong>
+              <p className="text-slate-400 text-xl mt-1">
+                {repository.description}
+              </p>
             </div>
           </header>
-          <ul>
+          <ul className="flex list-none mt-10">
             <li>
-              <strong>{repository.stars_count}</strong>
-              <span>Stars</span>
+              <strong className={styles.strong()}>
+                {repository.stars_count}
+              </strong>
+              <span className={styles.span()}>Stars</span>
+            </li>
+            <li className="mx-20">
+              <strong className={styles.strong()}>
+                {repository.forks_count}
+              </strong>
+              <span className={styles.span()}>Forks</span>
             </li>
             <li>
-              <strong>{repository.forks_count}</strong>
-              <span>Forks</span>
-            </li>
-            <li>
-              <strong>{repository.open_issues_count}</strong>
-              <span>Issues abertas</span>
+              <strong className={styles.strong()}>
+                {repository.open_issues_count}
+              </strong>
+              <span className={styles.span()}>Issues abertas</span>
             </li>
           </ul>
-        </RepositoryInfo>
+        </section>
       )}
-      <Issues>
+      <div className="mt-20">
         {issues.map(issue => (
           <a
+            className={styles.link()}
             href={issue.url}
             key={issue.id}
             target="_blank"
             rel="noopener noreferrer">
             <div>
-              <strong>{issue.title}</strong>
-              <p>{issue.user.login}</p>
+              <strong className="text-slate-200 text-lg">{issue.title}</strong>
+              <p className="text-slate-400 text-lg">{issue.user.login}</p>
             </div>
-            <FiChevronRight size={20} />
+            <FiChevronRight size={20} className="text-slate-100" />
           </a>
         ))}
-      </Issues>
+      </div>
     </>
   );
 };

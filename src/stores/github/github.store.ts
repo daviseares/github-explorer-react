@@ -1,6 +1,7 @@
+import { create } from 'zustand';
+import { combine, persist } from 'zustand/middleware';
 import { githubApi } from '~/api';
 import { githubMapper } from '~/mappers';
-import { combine, create, persist } from '~/modules';
 import { IGithubStore, initialState } from './github.store.config';
 
 const githubStore = combine({ ...initialState }, set => ({
