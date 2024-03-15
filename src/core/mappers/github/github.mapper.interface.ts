@@ -3,7 +3,7 @@ import {
   IssueFromApi,
   RepoFromApi,
   RepositoryType,
-} from '~/utils/types';
+} from '~/core/utils/types';
 
 export interface IGithubMapper {
   mapRepository: (repository: RepoFromApi[]) => RepositoryType[];

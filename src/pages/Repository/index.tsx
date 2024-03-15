@@ -1,41 +1,24 @@
-import { FC, useEffect } from 'react';
-import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
-import { Link, useLocation } from 'react-router-dom';
-import { GithubLogo } from '~/assets';
-import { useGithubStore } from '~/stores';
-import { RepositoryType } from '~/utils/types';
-import * as styles from './styles';
+import { FC } from 'react';
+import { FiChevronRight } from 'react-icons/fi';
+import { tv } from 'tailwind-variants';
+import { ActionRow } from '~/core/components/ActionRow';
+import { Header } from '~/core/components/Header';
+import { useRepositoryController } from './hooks/useRepositoryController';
+
+const strong = tv({
+  base: 'block text-4xl text-slate-200',
+});
+
+const span = tv({
+  base: 'block text-xl text-slate-300 mt-2',
+});
 
 const Repository: FC = () => {
-  const { getIssues, issues, clearIssues } = useGithubStore();
-  const location = useLocation();
-  const repository = location.state as RepositoryType;
-
-  const onGetIssues = async () => {
-    try {
-      await getIssues(repository.full_name);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  useEffect(() => {
-    onGetIssues();
-
-    return () => {
-      clearIssues();
-    };
-  }, []);
+  const { issues, repository } = useRepositoryController();
 
   return (
     <>
-      <header className="flex items-center justify-between">
-        <img src={GithubLogo} alt="Github Explorer" />
-        <Link to="/" className={styles.goback()}>
-          <FiChevronLeft size={16} />
-          Voltar
-        </Link>
-      </header>
+      <Header showBackButton />
 
       {repository && (
         <section className="mt-20">
@@ -56,40 +39,35 @@ const Repository: FC = () => {
           </header>
           <ul className="flex list-none mt-10">
             <li>
-              <strong className={styles.strong()}>
-                {repository.stars_count}
-              </strong>
-              <span className={styles.span()}>Stars</span>
+              <strong className={strong()}>{repository.stars_count}</strong>
+              <span className={span()}>Stars</span>
             </li>
             <li className="mx-20">
-              <strong className={styles.strong()}>
-                {repository.forks_count}
-              </strong>
-              <span className={styles.span()}>Forks</span>
+              <strong className={strong()}>{repository.forks_count}</strong>
+              <span className={span()}>Forks</span>
             </li>
             <li>
-              <strong className={styles.strong()}>
+              <strong className={strong()}>
                 {repository.open_issues_count}
               </strong>
-              <span className={styles.span()}>Issues abertas</span>
+              <span className={span()}>Issues abertas</span>
             </li>
           </ul>
         </section>
       )}
       <div className="mt-20">
         {issues.map(issue => (
-          <a
-            className={styles.link()}
+          <ActionRow.Card
             href={issue.url}
             key={issue.id}
             target="_blank"
             rel="noopener noreferrer">
             <div>
-              <strong className="text-slate-200 text-lg">{issue.title}</strong>
-              <p className="text-slate-400 text-lg">{issue.user.login}</p>
+              <ActionRow.Title>{issue.title}</ActionRow.Title>
+              <ActionRow.Description>{issue.user.login}</ActionRow.Description>
             </div>
             <FiChevronRight size={20} className="text-slate-100" />
-          </a>
+          </ActionRow.Card>
         ))}
       </div>
     </>

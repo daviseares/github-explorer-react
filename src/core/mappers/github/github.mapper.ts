@@ -3,7 +3,7 @@ import {
   IssueFromApi,
   RepoFromApi,
   RepositoryType,
-} from '~/utils/types';
+} from '~/core/utils/types';
 import { IGithubMapper } from './github.mapper.interface';
 
 export default class GithubMapper implements IGithubMapper {

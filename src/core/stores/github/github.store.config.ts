@@ -1,4 +1,4 @@
-import { Issue, RepositoryType } from '~/utils/types';
+import { Issue, RepositoryType } from '~/core/utils/types';
 
 type InitialState = {
   repos: RepositoryType[];

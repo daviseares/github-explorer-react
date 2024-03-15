@@ -1,5 +1,5 @@
-import { ResponseError } from '~/utils';
-import { RepoFromApi } from '~/utils/types';
+import { ResponseError } from '~/core/utils';
+import { RepoFromApi } from '~/core/utils/types';
 import request from '../request';
 import { IGithubApi } from './github.api.interface';
 
